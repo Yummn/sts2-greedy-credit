@@ -1,0 +1,48 @@
+﻿<Project Sdk="Godot.NET.Sdk/4.5.1" InitialTargets="CheckDependencyPaths">
+  <Import Project=".\Sts2PathDiscovery.props" />
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>true</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <RootNamespace>GreedyCredit</RootNamespace>
+    <AssemblyName>GreedyCredit</AssemblyName>
+    <AppOutputBase>$(MSBuildProjectDirectory)\</AppOutputBase>
+    <PathMap>$(AppOutputBase)=.\</PathMap>
+    <GodotDisabledSourceGenerators>GodotPluginsInitializer</GodotDisabledSourceGenerators>
+    <NoWarn>$(NoWarn);MSB3270</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup Condition="Exists('$(Sts2DataDir)')">
+    <Reference Include="0Harmony">
+      <HintPath>$(Sts2DataDir)/0Harmony.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="sts2">
+      <HintPath>$(Sts2DataDir)/sts2.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="GreedyCredit/**" />
+    <EmbeddedResource Remove="GreedyCredit/**" />
+    <None Include="GreedyCredit.json" />
+    <None Include="project.godot" />
+    <None Include="README.md" />
+  </ItemGroup>
+
+  <Target Name="CheckDependencyPaths">
+    <Error Text="Slay the Spire 2 data not found at path '$(Sts2DataDir)'. Install StS2 or create local.props from local.props.template."
+           Condition="'$(Sts2DataDir)' == '' or !Exists('$(Sts2DataDir)')" />
+  </Target>
+
+  <Target Name="CopyToModsFolderOnBuild" AfterTargets="Build" Condition="Exists('$(Sts2Path)')">
+    <Message Text="Copying GreedyCredit.dll, .pdb and manifest to $(ModsPath)GreedyCredit/" Importance="high" />
+    <MakeDir Directories="$(ModsPath)GreedyCredit/" />
+    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(ModsPath)GreedyCredit/" />
+    <Copy SourceFiles="GreedyCredit.json" DestinationFolder="$(ModsPath)GreedyCredit/" />
+    <Copy SourceFiles="$(TargetDir)$(TargetName).pdb" DestinationFolder="$(ModsPath)GreedyCredit/" Condition="Exists('$(TargetDir)$(TargetName).pdb')" />
+  </Target>
+</Project>
