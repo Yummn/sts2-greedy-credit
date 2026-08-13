@@ -1,8 +1,8 @@
 ﻿{
   "id": "GreedyCredit",
   "name": "Greedy Credit / 贪婪赊账",
-  "author": "Codex",
-  "description": "Allows shop purchases and card removal below zero gold. Any negative debt adds built-in Greed curses by 50-gold bands (-1..-50 = 1). On shop entry, paid debt removes those Greed curses. No BaseLib dependency.",
+  "author": "Yummn",
+  "description": "允许商店购买和删牌时把金币花到负数。欠款每满一个 50 金币区间就加入一张游戏内置“贪婪”诅咒；再次进入商店时按当前金币结算，并移除已经还清部分对应的诅咒。无需 BaseLib。",
   "version": "v0.2.1",
   "min_game_version": "0.103.2",
   "has_pck": false,
